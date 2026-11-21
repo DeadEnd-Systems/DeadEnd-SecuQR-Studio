@@ -1,1081 +1,157 @@
-
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeadEnd SecuQR Studio — Fancy A-Z QR &amp; Pro Password Generator</title>
-  <meta name="description" content="Create custom gaming-themed fancy QR codes (GTA VI, Spider-Man, VIP Gold, UPI, Wi-Fi, vCard) and cryptographically secure passwords. Powered by DeadEnd Systems." />
-  
-  <!-- Google Fonts: Inter & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            brand: {
-              dark: '#07090e',
-              card: '#0f131f',
-              border: '#1e263d',
-              accent: '#6366f1',
-              pink: '#ff2a85',
-              cyan: '#00f0ff',
-            }
-          }
-        }
-      }
-    };
-  </script>
-
-  <!-- QR Code Styling Library (Supports Gradients, Dots, Rounded Shapes & Center Logos) -->
-  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080914">
+  <meta name="description" content="DeadEnd SecuQR Studio — Create, protect and connect with beautiful QR codes and secure passwords.">
+  <title>DeadEnd SecuQR Studio | Create • Protect • Connect</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    body {
-      background-color: #07090e;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.14) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(255, 42, 133, 0.10) 0px, transparent 50%);
-      color: #f8fafc;
-      min-height: 100vh;
-    }
-
-    .glass-panel {
-      background: rgba(15, 19, 31, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .qr-canvas-wrapper canvas,
-    .qr-canvas-wrapper svg {
-      max-width: 100% !important;
-      height: auto !important;
-      border-radius: 16px;
-      box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Custom Range Slider */
-    input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      background: #1e263d;
-      height: 8px;
-      border-radius: 999px;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #ec4899);
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
-    }
-
-    /* Hide scrollbar for horizontal pill lists on mobile */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    :root{--bg:#080914;--panel:#101326;--panel2:#151a31;--line:#252b49;--text:#f4f5ff;--muted:#a3a9c7;--purple:#a855f7;--blue:#38bdf8;--green:#4ade80}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 0%,#21103d 0,transparent 32%),radial-gradient(circle at 0% 35%,#0d2441 0,transparent 30%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}.wrap{width:min(1120px,92%);margin:auto}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}.brand{font-weight:900;letter-spacing:.5px;font-size:19px}.brand b{color:var(--blue)}.navlinks{display:flex;gap:24px;color:var(--muted);font-size:14px}.navlinks a:hover{color:white}
+    .hero{padding:78px 0 52px;text-align:center}.eyebrow{display:inline-block;border:1px solid #a855f766;background:#a855f714;color:#d8b4fe;padding:8px 14px;border-radius:999px;font-size:12px;letter-spacing:2px;font-weight:800}.hero h1{font-size:clamp(38px,7vw,72px);line-height:1.04;margin:22px auto 16px;max-width:850px;letter-spacing:-2px}.gradient{background:linear-gradient(90deg,#c084fc,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:650px;margin:0 auto;color:var(--muted);line-height:1.7;font-size:17px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:12px;padding:13px 19px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{background:linear-gradient(100deg,var(--purple),#397df5);color:white;box-shadow:0 8px 30px #7c3aed33}.secondary{background:#ffffff0b;border:1px solid var(--line);color:white}.btn:hover{transform:translateY(-1px);filter:brightness(1.12)}
+    .trust{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;color:#b9c2df;font-size:13px;margin:34px 0 0}.trust span:before{content:"✓";color:var(--green);margin-right:7px}
+    section{padding:45px 0}.sectionhead{text-align:center;margin-bottom:26px}.sectionhead h2{font-size:clamp(27px,4vw,38px);margin:0 0 9px}.sectionhead p{color:var(--muted);margin:0;line-height:1.6}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.card{background:linear-gradient(145deg,#151a31eF,#0e1224);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 12px 35px #0002}.card h3{margin:0 0 8px;font-size:17px}.card p{color:var(--muted);font-size:14px;line-height:1.55;margin:0}.demo{display:flex;align-items:center;gap:16px}.qrbox{background:white;border-radius:12px;padding:8px;width:112px;height:112px;display:grid;place-items:center;flex:none}.qrbox img,.qrbox canvas{max-width:100%;height:auto}.demo small{color:#aeb5d2}
+    .toolgrid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.field{margin:14px 0}.field label{display:block;color:#cbd2ed;font-size:13px;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;background:#090d1d;border:1px solid #303858;color:white;border-radius:10px;padding:12px;font:inherit;outline:none}.field input:focus,.field textarea:focus{border-color:var(--purple)}.field textarea{min-height:88px;resize:vertical}.toolresult{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;min-height:230px;background:#090d1d;border:1px dashed #3c456a;border-radius:14px;padding:18px}.toolresult .qrbox{width:170px;height:170px}.hint{color:var(--muted);font-size:12px;line-height:1.5}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.featureicon{font-size:24px;margin-bottom:12px}.passwordout{font-size:18px;word-break:break-all;background:#090d1d;border:1px solid var(--line);padding:14px;border-radius:10px;min-height:50px}
+    .banner{border:1px solid #7c3aed66;background:linear-gradient(110deg,#7c3aed20,#0ea5e920);border-radius:22px;padding:28px;text-align:center}.banner h2{margin:0 0 10px}.banner p{color:var(--muted);margin:0 auto 18px;max-width:650px;line-height:1.6}footer{border-top:1px solid #ffffff12;padding:28px 0;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.toolgrid{grid-template-columns:1fr}.navlinks{gap:12px;font-size:12px}.hero{padding-top:58px}}
+    @media(max-width:560px){.grid{grid-template-columns:1fr}.navlinks a:nth-child(2){display:none}.brand{font-size:16px}.demo{align-items:flex-start}.hero h1{letter-spacing:-1px}.card{padding:17px}}
   </style>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white flex flex-col">
+<body>
+<header class="wrap nav">
+  <a class="brand" href="#">DEADEND <b>SECUQR</b></a>
+  <nav class="navlinks"><a href="#demos">QR Demos</a><a href="#features">Features</a><a href="#studio">Free Tools</a></nav>
+  <a class="btn secondary" href="#studio">Launch Studio ↗</a>
+</header>
 
-  <!-- Top Monetization & Ecosystem Promo Bar -->
-  <div class="bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-900 border-b border-indigo-500/20 px-4 py-2 text-xs sm:text-sm">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-      <div class="flex items-center gap-2 flex-wrap justify-center">
-        <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold text-[11px] uppercase tracking-wider">🔥 Hot Deal</span>
-        <span class="text-slate-200">Track live Amazon &amp; Flipkart price drops 24/7 with</span>
-        <a href="https://t.me/sniperscraper_bot" target="_blank" rel="noopener noreferrer" class="font-bold text-cyan-400 hover:text-cyan-300 underline decoration-cyan-500/50 underline-offset-2">@sniperscraper_bot</a>
+<main>
+  <section class="hero wrap">
+    <span class="eyebrow">CREATE • PROTECT • CONNECT</span>
+    <h1>One studio for <span class="gradient">smarter QR</span><br>and stronger security.</h1>
+    <p>Create useful QR codes in seconds, explore real scan-ready examples, and generate strong passwords — with tools that run directly in your browser.</p>
+    <div class="actions"><a class="btn primary" href="#studio">🚀 Open Free Studio</a><a class="btn secondary" href="#demos">Explore QR Examples ↓</a></div>
+    <div class="trust"><span>No sign-up for basic tools</span><span>Browser-based generation</span><span>Free to try</span></div>
+  </section>
+
+  <section id="demos" class="wrap">
+    <div class="sectionhead"><h2>See what you can create</h2><p>These are working demo QR codes. Scan them with your phone camera.</p></div>
+    <div class="grid">
+      <article class="card demo"><div class="qrbox" id="demo1"></div><div><h3>Website QR</h3><p>Open a website instantly.</p><small>Demo: example.com</small></div></article>
+      <article class="card demo"><div class="qrbox" id="demo2"></div><div><h3>Wi-Fi QR</h3><p>Connect to a sample Wi-Fi network.</p><small>Demo network only</small></div></article>
+      <article class="card demo"><div class="qrbox" id="demo3"></div><div><h3>UPI QR</h3><p>Example payment address format.</p><small>Not a real payment request</small></div></article>
+      <article class="card demo"><div class="qrbox" id="demo4"></div><div><h3>WhatsApp QR</h3><p>Open a sample WhatsApp chat.</p><small>Placeholder number</small></div></article>
+      <article class="card demo"><div class="qrbox" id="demo5"></div><div><h3>Contact QR</h3><p>Save a sample contact card.</p><small>Demo contact details</small></div></article>
+      <article class="card"><div class="featureicon">✦</div><h3>Your brand, your QR</h3><p>Use the free generator below to make a QR code for your own link or text and download it as a PNG image.</p></article>
+    </div>
+  </section>
+
+  <section id="features" class="wrap">
+    <div class="sectionhead"><h2>Built for everyday security</h2><p>A clean starting point for personal use, creators and growing businesses.</p></div>
+    <div class="grid">
+      <article class="card"><div class="featureicon">▦</div><h3>QR Intelligence Studio</h3><p>Create QR codes for links, Wi-Fi, contact details, messages and more.</p></article>
+      <article class="card"><div class="featureicon">✧</div><h3>QR Design Tools</h3><p>Start with a crisp, scannable QR image that you can download and share.</p></article>
+      <article class="card"><div class="featureicon">⌁</div><h3>Password Security Lab</h3><p>Generate random passwords locally in your browser. No account required.</p></article>
+      <article class="card"><div class="featureicon">◉</div><h3>Dynamic QR — planned</h3><p>Editable destinations and scan analytics are planned for a future backend release.</p></article>
+      <article class="card"><div class="featureicon">▤</div><h3>Business tools — planned</h3><p>Bulk QR creation, team workspaces and brand kits are future upgrades.</p></article>
+      <article class="card"><div class="featureicon">⌘</div><h3>Privacy-first basics</h3><p>Basic QR and password generation happens in your browser. Avoid entering sensitive data on shared devices.</p></article>
+    </div>
+  </section>
+
+  <section id="studio" class="wrap">
+    <div class="sectionhead"><h2>Free tools</h2><p>Try the tools right here — no login required.</p></div>
+    <div class="toolgrid">
+      <div class="card">
+        <h3>▦ QR Code Generator</h3>
+        <p class="hint">Enter a URL, text or other QR content. Download your generated QR as PNG.</p>
+        <div class="field"><label for="qrText">Your content</label><textarea id="qrText" placeholder="https://yourwebsite.com">https://example.com</textarea></div>
+        <div class="row"><button class="btn primary" id="makeQr">Generate QR</button><button class="btn secondary" id="downloadQr">Download PNG</button></div>
+        <p class="hint" id="qrStatus" aria-live="polite">Ready to generate.</p>
       </div>
-      <div class="flex items-center gap-3 text-xs text-slate-400">
-        <a href="https://t.me/DeadEndGuardUpdates" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1">
-          <span>📢 Join @DeadEndGuardUpdates</span>
-        </a>
+      <div class="card">
+        <h3>Your QR preview</h3><p class="hint">Scan this code to test it.</p>
+        <div class="toolresult"><div class="qrbox" id="generatedQr"></div><span class="hint">DEADEND SECUQR STUDIO</span></div>
+      </div>
+      <div class="card">
+        <h3>⛨ Password Generator</h3><p class="hint">Create a random password on this device.</p>
+        <div class="field"><label for="passLength">Password length: <strong id="lengthValue">18</strong></label><input id="passLength" type="range" min="8" max="48" value="18"></div>
+        <div class="field"><label><input id="useUpper" type="checkbox" checked> Include uppercase</label><br><label><input id="useNumbers" type="checkbox" checked> Include numbers</label><br><label><input id="useSymbols" type="checkbox" checked> Include symbols</label></div>
+        <div class="passwordout" id="passwordOutput">Tap Generate Password</div>
+        <div class="row" style="margin-top:12px"><button class="btn primary" id="makePassword">Generate Password</button><button class="btn secondary" id="copyPassword">Copy</button></div>
+        <p class="hint" id="passStatus" aria-live="polite">Use a unique password for every account.</p>
+      </div>
+      <div class="card">
+        <h3>Security note</h3><p class="hint">This starter website is a static front-end demo. It does not yet include user accounts, saved QR history, dynamic QR redirects, scan analytics, payments, admin dashboard or a server database. Those features need a secure backend and will be added in later development stages.</p>
       </div>
     </div>
-  </div>
-
-  <!-- Main Header -->
-  <header class="sticky top-0 z-40 glass-panel border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
-      <!-- Brand Identity -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/25">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2M7 7h3v3H7V7zm7 0h3v3h-3V7zm-7 7h3v3H7v-3zm7 3h3m-3-3h1m2 0h.01" />
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">DeadEnd SecuQR Studio</h1>
-            <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md bg-gradient-to-r from-amber-500/20 to-pink-500/20 text-amber-300 border border-amber-400/30">PRO EDITION</span>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium">Powered by <span class="text-indigo-400 font-semibold">DeadEnd Systems</span></p>
-        </div>
-      </div>
-
-      <!-- Primary Studio Switcher -->
-      <nav class="flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
-        <button id="tabBtnQR" onclick="switchMainTab('qr')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md">
-          🎨 Fancy A-Z QR Studio
-        </button>
-        <button id="tabBtnPass" onclick="switchMainTab('password')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white">
-          🔐 Pro Password Generator
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Workspace -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">
-
-    <!-- ========================================================= -->
-    <!-- SECTION 1: FANCY A-Z QR CODE STUDIO                       -->
-    <!-- ========================================================= -->
-    <section id="sectionQR" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      
-      <!-- Left Column: Controls & Customization (7 cols) -->
-      <div class="lg:col-span-7 space-y-6">
-        
-        <!-- Step 1: Choose QR Content Type (A to Z Modes) -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 shadow-xl">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-              <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 text-xs flex items-center justify-center font-bold">1</span>
-              Select QR Type (A to Z)
-            </h2>
-            <span class="text-xs text-slate-400">Instant Live Encoding</span>
-          </div>
-
-          <!-- Mode Selector Pills -->
-          <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-5">
-            <button onclick="setQRMode('url')" data-mode="url" class="qr-mode-btn active shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-indigo-600/20 border-indigo-500 text-indigo-300">
-              🌐 Website / Social
-            </button>
-            <button onclick="setQRMode('upi')" data-mode="upi" class="qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white">
-              💸 UPI Payment (₹)
-            </button>
-            <button onclick="setQRMode('wifi')" data-mode="wifi" class="qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white">
-              📶 Wi-Fi Connect
-            </button>
-            <button onclick="setQRMode('whatsapp')" data-mode="whatsapp" class="qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white">
-              💬 WhatsApp Chat
-            </button>
-            <button onclick="setQRMode('vcard')" data-mode="vcard" class="qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white">
-              🪪 Digital vCard
-            </button>
-            <button onclick="setQRMode('text')" data-mode="text" class="qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white">
-              📝 Plain Text
-            </button>
-          </div>
-
-          <!-- Dynamic Input Fields Container -->
-          <div id="qrInputsContainer" class="space-y-4">
-            <!-- URL Mode (Default) -->
-            <div id="input-url" class="mode-panel space-y-3">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Website, Instagram, YouTube, or Telegram Link</label>
-              <input type="url" id="val-url" value="https://t.me/sniperscraper_bot" placeholder="https://yourwebsite.com" oninput="updateQR()" class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500 transition" />
-            </div>
-
-            <!-- UPI Payment Mode -->
-            <div id="input-upi" class="mode-panel hidden space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">UPI ID (VPA) *</label>
-                  <input type="text" id="val-upi-id" placeholder="yourname@okaxis" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Payee / Shop Name *</label>
-                  <input type="text" id="val-upi-name" placeholder="DeadEnd Store" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Fixed Amount in ₹ (Optional — leave blank so customer enters amount)</label>
-                <input type="number" id="val-upi-amount" placeholder="e.g. 299" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-              </div>
-            </div>
-
-            <!-- Wi-Fi Mode -->
-            <div id="input-wifi" class="mode-panel hidden space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Wi-Fi Network Name (SSID) *</label>
-                  <input type="text" id="val-wifi-ssid" placeholder="DeadEnd_5G_Fiber" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Wi-Fi Password</label>
-                  <input type="text" id="val-wifi-pass" placeholder="SuperSecret@123" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Security Encryption</label>
-                <select id="val-wifi-enc" onchange="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500">
-                  <option value="WPA">WPA / WPA2 / WPA3 (Standard)</option>
-                  <option value="WEP">WEP</option>
-                  <option value="nopass">No Password (Open Wi-Fi)</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- WhatsApp Direct Chat Mode -->
-            <div id="input-whatsapp" class="mode-panel hidden space-y-3">
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Number (with Country Code, e.g. 919876543210) *</label>
-                <input type="tel" id="val-wa-phone" value="91" placeholder="919876543210" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Pre-filled Greeting Message</label>
-                <input type="text" id="val-wa-msg" placeholder="Hi! I scanned your QR code and want to know more." oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-              </div>
-            </div>
-
-            <!-- Digital vCard Contact Mode -->
-            <div id="input-vcard" class="mode-panel hidden space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name *</label>
-                  <input type="text" id="val-vc-name" placeholder="Arbaj Dev" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Phone Number *</label>
-                  <input type="tel" id="val-vc-phone" placeholder="+91 98765 43210" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
-                  <input type="email" id="val-vc-email" placeholder="contact@deadendsystems.io" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-1">Brand / Company</label>
-                  <input type="text" id="val-vc-org" placeholder="DeadEnd Systems" oninput="updateQR()" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500" />
-                </div>
-              </div>
-            </div>
-
-            <!-- Plain Text Mode -->
-            <div id="input-text" class="mode-panel hidden space-y-3">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Custom Message, Secret Note, or Promo Code</label>
-              <textarea id="val-text" rows="3" placeholder="Enter any text, coupon code, or secret note here..." oninput="updateQR()" class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-slate-800 text-white text-sm focus:outline-none focus:border-indigo-500 transition"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2: Gaming & Pop-Culture Fancy Presets -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 shadow-xl">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-              <span class="w-6 h-6 rounded-full bg-pink-500/20 text-pink-400 text-xs flex items-center justify-center font-bold">2</span>
-              Gaming &amp; Fancy Themes
-            </h2>
-            <span class="text-xs text-pink-400 font-medium">1-Click Style</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <!-- Theme 1: GTA VI Vice City -->
-            <button onclick="applyTheme('gtavi')" class="theme-card p-3 rounded-xl border border-pink-500/40 bg-gradient-to-br from-pink-950/50 via-purple-950/40 to-cyan-950/50 hover:border-pink-400 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">🌴</span>
-                <span class="w-4 h-4 rounded-full bg-gradient-to-r from-[#ff2a85] to-[#00f0ff]"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-pink-300">GTA VI Vice City</p>
-              <p class="text-[10px] text-slate-400">Neon Pink &amp; Cyan</p>
-            </button>
-
-            <!-- Theme 2: Spider-Man Web -->
-            <button onclick="applyTheme('spiderman')" class="theme-card p-3 rounded-xl border border-red-500/30 bg-gradient-to-br from-red-950/50 to-blue-950/50 hover:border-red-400 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">🕷️</span>
-                <span class="w-4 h-4 rounded-full bg-gradient-to-r from-[#e60023] to-[#0055ff]"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-red-300">Spider-Man Web</p>
-              <p class="text-[10px] text-slate-400">Crimson &amp; Royal Blue</p>
-            </button>
-
-            <!-- Theme 3: VIP Luxury Gold -->
-            <button onclick="applyTheme('vipgold')" class="theme-card p-3 rounded-xl border border-amber-500/30 bg-gradient-to-br from-amber-950/40 to-zinc-950 hover:border-amber-400 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">👑</span>
-                <span class="w-4 h-4 rounded-full bg-gradient-to-r from-[#f59e0b] to-[#fde047]"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-amber-300">VIP Luxury Gold</p>
-              <p class="text-[10px] text-slate-400">Gold on Obsidian</p>
-            </button>
-
-            <!-- Theme 4: Hacker Matrix -->
-            <button onclick="applyTheme('matrix')" class="theme-card p-3 rounded-xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-black hover:border-emerald-400 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">💻</span>
-                <span class="w-4 h-4 rounded-full bg-[#00ff41]"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-emerald-300">Hacker Matrix</p>
-              <p class="text-[10px] text-slate-400">Cyber Neon Green</p>
-            </button>
-
-            <!-- Theme 5: Electric Cyberpunk -->
-            <button onclick="applyTheme('cyber')" class="theme-card p-3 rounded-xl border border-yellow-400/30 bg-gradient-to-br from-yellow-950/40 to-indigo-950/50 hover:border-yellow-300 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">⚡</span>
-                <span class="w-4 h-4 rounded-full bg-gradient-to-r from-[#facc15] to-[#38bdf8]"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-yellow-300">Cyberpunk 2077</p>
-              <p class="text-[10px] text-slate-400">Cyber Yellow &amp; Blue</p>
-            </button>
-
-            <!-- Theme 6: Classic Clean Pro -->
-            <button onclick="applyTheme('classic')" class="theme-card p-3 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-400 text-left transition group">
-              <div class="flex items-center justify-between mb-1.5">
-                <span class="text-lg">⚪</span>
-                <span class="w-4 h-4 rounded-full bg-white border border-slate-500"></span>
-              </div>
-              <p class="text-xs font-bold text-white group-hover:text-slate-200">Classic Clean Pro</p>
-              <p class="text-[10px] text-slate-400">High-Contrast B&amp;W</p>
-            </button>
-          </div>
-        </div>
-
-        <!-- Step 3: Pro Styling, Shapes & Center Badge -->
-        <div class="glass-panel rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
-          <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 text-xs flex items-center justify-center font-bold">3</span>
-            Custom Shapes, Colors &amp; Center Badge
-          </h2>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Dot Pattern Style -->
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">QR Pixel / Dot Pattern</label>
-              <select id="opt-dots-type" onchange="updateQR()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs sm:text-sm focus:outline-none focus:border-indigo-500">
-                <option value="rounded" selected>Rounded Dots (Modern)</option>
-                <option value="dots">Circular Dots (Bubbles)</option>
-                <option value="classy-rounded">Classy Rounded (Web Style)</option>
-                <option value="classy">Classy Sharp</option>
-                <option value="extra-rounded">Extra Rounded Liquid</option>
-                <option value="square">Classic Square</option>
-              </select>
-            </div>
-
-            <!-- Corner Eye Style -->
-            <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Corner Eye Frame</label>
-              <select id="opt-corner-type" onchange="updateQR()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs sm:text-sm focus:outline-none focus:border-indigo-500">
-                <option value="extra-rounded" selected>Extra Rounded Ring</option>
-                <option value="dot">Circular Eye</option>
-                <option value="square">Sharp Square Eye</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Custom Color Pickers -->
-          <div class="grid grid-cols-3 gap-3">
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-              <label class="block text-[11px] text-slate-400 mb-1">Primary Color</label>
-              <div class="flex items-center gap-2">
-                <input type="color" id="opt-color1" value="#ff2a85" oninput="updateQR()" class="w-7 h-7 rounded cursor-pointer bg-transparent border-0" />
-                <span id="lbl-color1" class="text-xs font-mono text-slate-300">#FF2A85</span>
-              </div>
-            </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-              <label class="block text-[11px] text-slate-400 mb-1">Gradient 2nd</label>
-              <div class="flex items-center gap-2">
-                <input type="color" id="opt-color2" value="#00f0ff" oninput="updateQR()" class="w-7 h-7 rounded cursor-pointer bg-transparent border-0" />
-                <span id="lbl-color2" class="text-xs font-mono text-slate-300">#00F0FF</span>
-              </div>
-            </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-              <label class="block text-[11px] text-slate-400 mb-1">Background</label>
-              <div class="flex items-center gap-2">
-                <input type="color" id="opt-bg" value="#0d0b1a" oninput="updateQR()" class="w-7 h-7 rounded cursor-pointer bg-transparent border-0" />
-                <span id="lbl-bg" class="text-xs font-mono text-slate-300">#0D0B1A</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Center Badge / Logo Selector -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-2">Center Icon Badge OR Custom Logo Upload</label>
-            <div class="flex flex-wrap gap-2 mb-3">
-              <button onclick="setCenterBadge('none')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300 hover:border-indigo-500">🚫 None</button>
-              <button onclick="setCenterBadge('gta')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-pink-500/20 border border-pink-500 text-pink-200">🌴 Vice Palm</button>
-              <button onclick="setCenterBadge('spider')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300 hover:border-red-500">🕷️ Spider</button>
-              <button onclick="setCenterBadge('crown')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300 hover:border-amber-500">👑 VIP Crown</button>
-              <button onclick="setCenterBadge('upi')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300 hover:border-emerald-500">₹ UPI Pay</button>
-              <button onclick="setCenterBadge('shield')" class="badge-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 border border-slate-700 text-slate-300 hover:border-cyan-500">🛡️ DeadEnd</button>
-            </div>
-
-            <!-- Upload Own Logo -->
-            <label class="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl border border-dashed border-slate-700 hover:border-indigo-500 bg-slate-950/60 cursor-pointer text-xs text-slate-300 transition">
-              <span>📁 Upload Your Own Logo / Photo (PNG, JPG, SVG)</span>
-              <input type="file" id="upload-logo" accept="image/*" onchange="handleLogoUpload(event)" class="hidden" />
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Sticky Live Preview & Download Card (5 cols) -->
-      <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-5">
-        <div class="glass-panel rounded-2xl p-6 shadow-2xl border border-indigo-500/20 text-center">
-          <div class="flex items-center justify-between mb-4">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              High-Contrast Scannable (ECC-H)
-            </span>
-            <span class="text-xs font-mono text-slate-400">1000×1000 HD</span>
-          </div>
-
-          <!-- QR Canvas Mount Container -->
-          <div class="flex items-center justify-center p-4 rounded-2xl bg-slate-950/90 border border-slate-800/80 mb-5 min-h-[290px]">
-            <div id="qrCanvasMount" class="qr-canvas-wrapper flex items-center justify-center"></div>
-          </div>
-
-          <!-- Encoded Payload Preview -->
-          <div class="mb-5 text-left bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-            <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Encoded QR Payload</p>
-            <p id="payloadPreview" class="text-xs font-mono text-slate-300 truncate">https://t.me/sniperscraper_bot</p>
-          </div>
-
-          <!-- Download Action Buttons -->
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="downloadQR('png')" class="py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
-              <span>⬇️ Download PNG</span>
-            </button>
-            <button onclick="downloadQR('svg')" class="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition flex items-center justify-center gap-2">
-              <span>📐 Vector SVG</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Sponsor / Affiliate Monetization Card -->
-        <div class="glass-panel rounded-2xl p-4 border border-amber-500/25 bg-gradient-to-r from-amber-500/5 to-purple-500/5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">🚀 DeadEnd Automation Suite</span>
-              <h3 class="text-sm font-bold text-white mt-0.5">Save Money on Amazon &amp; Flipkart</h3>
-              <p class="text-xs text-slate-400 mt-1">Paste any product link in our Telegram bot to track secret price drops automatically.</p>
-            </div>
-          </div>
-          <a href="https://t.me/sniperscraper_bot" target="_blank" rel="noopener noreferrer" class="mt-3 block w-full py-2 text-center rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition">
-            Launch @sniperscraper_bot →
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- SECTION 2: PRO CRYPTOGRAPHIC PASSWORD GENERATOR           -->
-    <!-- ========================================================= -->
-    <section id="sectionPassword" class="hidden max-w-3xl mx-auto space-y-6">
-      <div class="glass-panel rounded-2xl p-6 sm:p-8 shadow-2xl border border-indigo-500/20">
-        <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
-          <div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-white">🔐 Cryptographic Password Vault</h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Generated locally in your browser using <code class="text-indigo-400">window.crypto</code> CSPRNG — zero server logs.</p>
-          </div>
-          <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">100% Client-Side</span>
-        </div>
-
-        <!-- Generated Password Output Box -->
-        <div class="relative bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 mb-4 flex items-center justify-between gap-3">
-          <input type="text" id="generatedPassword" readonly class="w-full bg-transparent font-mono text-lg sm:text-2xl font-bold text-cyan-300 focus:outline-none select-all" />
-          <div class="flex items-center gap-2 shrink-0">
-            <button onclick="generatePassword()" title="Regenerate" class="p-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 transition">
-              🔄
-            </button>
-            <button onclick="copyPrimaryPassword()" class="px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow-lg transition">
-              📋 Copy
-            </button>
-          </div>
-        </div>
-
-        <!-- Strength Meter & Crack Time -->
-        <div class="mb-6 bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
-          <div class="flex items-center justify-between text-xs mb-2">
-            <span class="text-slate-400 font-medium">Security Strength: <strong id="strengthLabel" class="text-emerald-400">Unbreakable</strong></span>
-            <span class="text-slate-400">Est. Brute-Force Crack Time: <strong id="crackTimeLabel" class="text-white font-mono">Centuries</strong></span>
-          </div>
-          <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden">
-            <div id="strengthBar" class="h-full w-full bg-emerald-500 transition-all duration-300"></div>
-          </div>
-        </div>
-
-        <!-- Length Slider -->
-        <div class="mb-6">
-          <div class="flex justify-between items-center mb-2">
-            <label for="passLength" class="text-sm font-semibold text-slate-200">Password Length</label>
-            <span id="passLengthVal" class="px-3 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 font-mono font-bold text-sm border border-indigo-500/30">16</span>
-          </div>
-          <input type="range" id="passLength" min="8" max="64" value="16" oninput="updateLengthLabel(); generatePassword();" class="w-full" />
-          <div class="flex justify-between text-[11px] text-slate-500 font-mono mt-1">
-            <span>8 (Min)</span>
-            <span>16 (Recommended)</span>
-            <span>32 (Military)</span>
-            <span>64 (Max)</span>
-          </div>
-        </div>
-
-        <!-- Character Toggles -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-          <label class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-slate-700">
-            <span class="text-sm font-medium text-slate-200">Uppercase Letters (A–Z)</span>
-            <input type="checkbox" id="chkUpper" checked onchange="generatePassword()" class="w-5 h-5 accent-indigo-600 rounded" />
-          </label>
-          <label class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-slate-700">
-            <span class="text-sm font-medium text-slate-200">Lowercase Letters (a–z)</span>
-            <input type="checkbox" id="chkLower" checked onchange="generatePassword()" class="w-5 h-5 accent-indigo-600 rounded" />
-          </label>
-          <label class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-slate-700">
-            <span class="text-sm font-medium text-slate-200">Numbers (0–9)</span>
-            <input type="checkbox" id="chkNumbers" checked onchange="generatePassword()" class="w-5 h-5 accent-indigo-600 rounded" />
-          </label>
-          <label class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-slate-700">
-            <span class="text-sm font-medium text-slate-200">Special Symbols (!@#$%^&amp;*)</span>
-            <input type="checkbox" id="chkSymbols" checked onchange="generatePassword()" class="w-5 h-5 accent-indigo-600 rounded" />
-          </label>
-          <label class="sm:col-span-2 flex items-center justify-between p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-slate-700">
-            <div>
-              <span class="text-sm font-medium text-slate-200 block">Exclude Ambiguous Characters</span>
-              <span class="text-xs text-slate-500">Avoids similar looking characters like 0, O, l, 1, I</span>
-            </div>
-            <input type="checkbox" id="chkAmbiguous" onchange="generatePassword()" class="w-5 h-5 accent-indigo-600 rounded" />
-          </label>
-        </div>
-
-        <!-- Bulk Enterprise Password Generator -->
-        <div class="pt-4 border-t border-slate-800">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Enterprise Bulk Mode</span>
-            <button onclick="generateBulkPasswords()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-indigo-300 border border-indigo-500/30 transition">
-              ⚡ Generate 5 Bulk Passwords
-            </button>
-          </div>
-          <div id="bulkPasswordList" class="hidden space-y-2 mt-3"></div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Commercial Footer -->
-  <footer class="border-t border-white/10 bg-slate-950/90 py-6 px-4 mt-12">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-      <div class="text-center sm:text-left">
-        <p class="font-bold text-white text-sm">DeadEnd SecuQR Studio <span class="text-indigo-400">v2.0</span></p>
-        <p class="mt-0.5">Powered by <strong class="text-slate-200">DeadEnd Systems</strong> • Commercial SaaS &amp; Security Tools</p>
-      </div>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="https://t.me/sniperscraper_bot" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition">🛍️ @sniperscraper_bot</a>
-        <a href="https://t.me/DeadEndGuardUpdates" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition">🛡️ @DeadEndGuardUpdates</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="px-4 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-xs sm:text-sm shadow-2xl flex items-center gap-2">
-      <span>✅</span>
-      <span id="toastMsg">Copied to clipboard!</span>
-    </div>
-  </div>
-
-  <!-- Application Logic -->
-  <script>
-    // =========================================================
-    // 1. STATE & PRESET SVG CENTER BADGES (DATA URIs)
-    // =========================================================
-    let currentQRMode = 'url';
-    let currentBadgeImage = '';
-
-    // Crisp, self-contained SVG data-URIs for center badges
-    const BADGE_ICONS = {
-      none: '',
-      gta: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#ff2a85"/>
-              <stop offset="100%" stop-color="#00f0ff"/>
-            </linearGradient>
-          </defs>
-          <circle cx="50" cy="50" r="46" fill="#0d0b1a" stroke="url(#g)" stroke-width="6"/>
-          <text x="50" y="64" font-size="44" text-anchor="middle">🌴</text>
-        </svg>
-      `),
-      spider: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" fill="#e60023" stroke="#ffffff" stroke-width="5"/>
-          <text x="50" y="65" font-size="44" text-anchor="middle">🕷️</text>
-        </svg>
-      `),
-      crown: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" fill="#09090b" stroke="#f59e0b" stroke-width="6"/>
-          <text x="50" y="65" font-size="44" text-anchor="middle">👑</text>
-        </svg>
-      `),
-      upi: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" fill="#059669" stroke="#ffffff" stroke-width="6"/>
-          <text x="50" y="67" font-family="Arial, sans-serif" font-weight="bold" font-size="50" fill="#ffffff" text-anchor="middle">₹</text>
-        </svg>
-      `),
-      shield: 'data:image/svg+xml;utf8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" fill="#0f172a" stroke="#6366f1" stroke-width="6"/>
-          <text x="50" y="65" font-size="44" text-anchor="middle">🛡️</text>
-        </svg>
-      `)
-    };
-
-    // Initialize with GTA VI Vice Palm badge by default
-    currentBadgeImage = BADGE_ICONS.gta;
-
-    // Initialize QRCodeStyling Instance
-    const qrCode = new QRCodeStyling({
-      width: 300,
-      height: 300,
-      type: "canvas",
-      data: "https://t.me/sniperscraper_bot",
-      image: currentBadgeImage,
-      margin: 10,
-      qrOptions: {
-        typeNumber: 0,
-        mode: "Byte",
-        errorCorrectionLevel: "H" // High error correction ensures 100% scannability even with center logos
-      },
-      imageOptions: {
-        hideBackgroundDots: true,
-        imageSize: 0.36,
-        margin: 4,
-        crossOrigin: "anonymous"
-      },
-      dotsOptions: {
-        type: "rounded",
-        gradient: {
-          type: "linear",
-          rotation: 0.78,
-          colorStops: [
-            { offset: 0, color: "#ff2a85" },
-            { offset: 1, color: "#00f0ff" }
-          ]
-        }
-      },
-      backgroundOptions: {
-        color: "#0d0b1a"
-      },
-      cornersSquareOptions: {
-        type: "extra-rounded",
-        color: "#ff2a85"
-      },
-      cornersDotOptions: {
-        type: "dot",
-        color: "#00f0ff"
-      }
-    });
-
-    // =========================================================
-    // 2. TAB & QR INPUT MODE CONTROLLERS
-    // =========================================================
-    function switchMainTab(tab) {
-      const secQR = document.getElementById('sectionQR');
-      const secPass = document.getElementById('sectionPassword');
-      const btnQR = document.getElementById('tabBtnQR');
-      const btnPass = document.getElementById('tabBtnPass');
-
-      if (tab === 'qr') {
-        secQR.classList.remove('hidden');
-        secPass.classList.add('hidden');
-        btnQR.className = "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md";
-        btnPass.className = "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white";
-      } else {
-        secQR.classList.add('hidden');
-        secPass.classList.remove('hidden');
-        btnPass.className = "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md";
-        btnQR.className = "flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-white";
-      }
-    }
-
-    function setQRMode(mode) {
-      currentQRMode = mode;
-
-      // Update pill styles
-      document.querySelectorAll('.qr-mode-btn').forEach(btn => {
-        if (btn.dataset.mode === mode) {
-          btn.className = "qr-mode-btn active shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-indigo-600/20 border-indigo-500 text-indigo-300";
-        } else {
-          btn.className = "qr-mode-btn shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold border transition bg-slate-900/70 border-slate-800 text-slate-400 hover:text-white";
-        }
-      });
-
-      // Toggle panels
-      document.querySelectorAll('.mode-panel').forEach(panel => panel.classList.add('hidden'));
-      const activePanel = document.getElementById(`input-${mode}`);
-      if (activePanel) activePanel.classList.remove('hidden');
-
-      // Auto-suggest UPI badge when switching to UPI
-      if (mode === 'upi') {
-        setCenterBadge('upi');
-      }
-
-      updateQR();
-    }
-
-    // Build standard compliant QR data string based on active mode
-    function buildQRPayload() {
-      switch (currentQRMode) {
-        case 'url': {
-          const val = document.getElementById('val-url').value.trim();
-          return val || "https://t.me/sniperscraper_bot";
-        }
-        case 'upi': {
-          const pa = document.getElementById('val-upi-id').value.trim() || "deadend@upi";
-          const pn = encodeURIComponent(document.getElementById('val-upi-name').value.trim() || "DeadEnd Store");
-          const am = document.getElementById('val-upi-amount').value.trim();
-          let upiStr = `upi://pay?pa=${pa}&pn=${pn}&cu=INR`;
-          if (am && Number(am) > 0) {
-            upiStr += `&am=${Number(am).toFixed(2)}`;
-          }
-          return upiStr;
-        }
-        case 'wifi': {
-          const ssid = document.getElementById('val-wifi-ssid').value.trim() || "DeadEnd_WiFi";
-          const pass = document.getElementById('val-wifi-pass').value;
-          const enc = document.getElementById('val-wifi-enc').value;
-          return `WIFI:T:${enc};S:${ssid};P:${pass};;`;
-        }
-        case 'whatsapp': {
-          const phone = document.getElementById('val-wa-phone').value.replace(/\D/g, '') || "919876543210";
-          const msg = encodeURIComponent(document.getElementById('val-wa-msg').value.trim());
-          return msg ? `https://wa.me/${phone}?text=${msg}` : `https://wa.me/${phone}`;
-        }
-        case 'vcard': {
-          const name = document.getElementById('val-vc-name').value.trim() || "DeadEnd Systems";
-          const phone = document.getElementById('val-vc-phone').value.trim() || "+919876543210";
-          const email = document.getElementById('val-vc-email').value.trim();
-          const org = document.getElementById('val-vc-org').value.trim();
-          return [
-            "BEGIN:VCARD",
-            "VERSION:3.0",
-            `FN:${name}`,
-            org ? `ORG:${org}` : "",
-            `TEL;TYPE=CELL:${phone}`,
-            email ? `EMAIL:${email}` : "",
-            "END:VCARD"
-          ].filter(Boolean).join("\n");
-        }
-        case 'text': {
-          return document.getElementById('val-text').value.trim() || "Powered by DeadEnd Systems";
-        }
-        default:
-          return "https://t.me/sniperscraper_bot";
-      }
-    }
-
-    // =========================================================
-    // 3. FANCY THEMES & LIVE QR RENDERING ENGINE
-    // =========================================================
-    function applyTheme(themeKey) {
-      const c1 = document.getElementById('opt-color1');
-      const c2 = document.getElementById('opt-color2');
-      const bg = document.getElementById('opt-bg');
-      const dots = document.getElementById('opt-dots-type');
-      const corners = document.getElementById('opt-corner-type');
-
-      if (themeKey === 'gtavi') {
-        c1.value = "#ff2a85";
-        c2.value = "#00f0ff";
-        bg.value = "#0d0b1a";
-        dots.value = "rounded";
-        corners.value = "extra-rounded";
-        setCenterBadge('gta');
-      } else if (themeKey === 'spiderman') {
-        c1.value = "#e60023";
-        c2.value = "#0055ff";
-        bg.value = "#ffffff";
-        dots.value = "classy-rounded";
-        corners.value = "extra-rounded";
-        setCenterBadge('spider');
-      } else if (themeKey === 'vipgold') {
-        c1.value = "#f59e0b";
-        c2.value = "#fde047";
-        bg.value = "#09090b";
-        dots.value = "dots";
-        corners.value = "dot";
-        setCenterBadge('crown');
-      } else if (themeKey === 'matrix') {
-        c1.value = "#00ff41";
-        c2.value = "#059669";
-        bg.value = "#000000";
-        dots.value = "extra-rounded";
-        corners.value = "square";
-        setCenterBadge('shield');
-      } else if (themeKey === 'cyber') {
-        c1.value = "#facc15";
-        c2.value = "#38bdf8";
-        bg.value = "#0f172a";
-        dots.value = "classy";
-        corners.value = "extra-rounded";
-        setCenterBadge('shield');
-      } else if (themeKey === 'classic') {
-        c1.value = "#000000";
-        c2.value = "#1e293b";
-        bg.value = "#ffffff";
-        dots.value = "square";
-        corners.value = "square";
-        setCenterBadge('none');
-      }
-
-      updateQR();
-      showToast(`Applied ${themeKey.toUpperCase()} theme!`);
-    }
-
-    function setCenterBadge(badgeKey) {
-      currentBadgeImage = BADGE_ICONS[badgeKey] || '';
-      updateQR();
-    }
-
-    function handleLogoUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        currentBadgeImage = e.target.result;
-        updateQR();
-        showToast("Custom center logo uploaded!");
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function updateQR() {
-      const payload = buildQRPayload();
-      document.getElementById('payloadPreview').textContent = payload.replace(/\n/g, ' | ');
-
-      const color1 = document.getElementById('opt-color1').value;
-      const color2 = document.getElementById('opt-color2').value;
-      const bgColor = document.getElementById('opt-bg').value;
-      const dotsType = document.getElementById('opt-dots-type').value;
-      const cornerType = document.getElementById('opt-corner-type').value;
-
-      // Update hex labels
-      document.getElementById('lbl-color1').textContent = color1.toUpperCase();
-      document.getElementById('lbl-color2').textContent = color2.toUpperCase();
-      document.getElementById('lbl-bg').textContent = bgColor.toUpperCase();
-
-      qrCode.update({
-        data: payload,
-        image: currentBadgeImage || undefined,
-        dotsOptions: {
-          type: dotsType,
-          gradient: {
-            type: "linear",
-            rotation: 0.78,
-            colorStops: [
-              { offset: 0, color: color1 },
-              { offset: 1, color: color2 }
-            ]
-          }
-        },
-        backgroundOptions: {
-          color: bgColor
-        },
-        cornersSquareOptions: {
-          type: cornerType,
-          color: color1
-        },
-        cornersDotOptions: {
-          type: cornerType === 'square' ? 'square' : 'dot',
-          color: color2
-        }
-      });
-    }
-
-    function downloadQR(extension) {
-      const fileName = `DeadEnd_SecuQR_${currentQRMode}_${Date.now()}`;
-      qrCode.download({
-        name: fileName,
-        extension: extension
-      });
-      showToast(`Downloading High-Res ${extension.toUpperCase()}...`);
-    }
-
-    // =========================================================
-    // 4. CRYPTOGRAPHIC PASSWORD GENERATOR (CSPRNG)
-    // =========================================================
-    function updateLengthLabel() {
-      document.getElementById('passLengthVal').textContent = document.getElementById('passLength').value;
-    }
-
-    function createCryptoPassword(length, useUpper, useLower, useNumbers, useSymbols, excludeAmbiguous) {
-      let upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      let lower = "abcdefghijklmnopqrstuvwxyz";
-      let numbers = "0123456789";
-      let symbols = "!@#$%^&*()-_=+[]{}|;:,.<>?";
-
-      if (excludeAmbiguous) {
-        upper = upper.replace(/[OI]/g, "");
-        lower = lower.replace(/[ol]/g, "");
-        numbers = numbers.replace(/[01]/g, "");
-      }
-
-      let charset = "";
-      if (useUpper) charset += upper;
-      if (useLower) charset += lower;
-      if (useNumbers) charset += numbers;
-      if (useSymbols) charset += symbols;
-
-      if (!charset) {
-        charset = lower + numbers;
-      }
-
-      const randomValues = new Uint32Array(length);
-      window.crypto.getRandomValues(randomValues);
-
-      let password = "";
-      for (let i = 0; i < length; i++) {
-        password += charset[randomValues[i] % charset.length];
-      }
-      return password;
-    }
-
-    function generatePassword() {
-      const length = parseInt(document.getElementById('passLength').value, 10);
-      const useUpper = document.getElementById('chkUpper').checked;
-      const useLower = document.getElementById('chkLower').checked;
-      const useNumbers = document.getElementById('chkNumbers').checked;
-      const useSymbols = document.getElementById('chkSymbols').checked;
-      const excludeAmbiguous = document.getElementById('chkAmbiguous').checked;
-
-      // Ensure at least one toggle stays active
-      if (!useUpper && !useLower && !useNumbers && !useSymbols) {
-        document.getElementById('chkLower').checked = true;
-      }
-
-      const pwd = createCryptoPassword(
-        length,
-        document.getElementById('chkUpper').checked,
-        document.getElementById('chkLower').checked,
-        document.getElementById('chkNumbers').checked,
-        document.getElementById('chkSymbols').checked,
-        excludeAmbiguous
-      );
-
-      document.getElementById('generatedPassword').value = pwd;
-      evaluatePasswordStrength(pwd);
-    }
-
-    function evaluatePasswordStrength(pwd) {
-      let poolSize = 0;
-      if (/[a-z]/.test(pwd)) poolSize += 26;
-      if (/[A-Z]/.test(pwd)) poolSize += 26;
-      if (/[0-9]/.test(pwd)) poolSize += 10;
-      if (/[^A-Za-z0-9]/.test(pwd)) poolSize += 26;
-
-      const entropy = pwd.length * Math.log2(poolSize || 26);
-      const bar = document.getElementById('strengthBar');
-      const label = document.getElementById('strengthLabel');
-      const crack = document.getElementById('crackTimeLabel');
-
-      if (entropy < 50) {
-        bar.style.width = "30%";
-        bar.className = "h-full bg-red-500 transition-all duration-300";
-        label.textContent = "Weak";
-        label.className = "text-red-400";
-        crack.textContent = "Few Minutes";
-      } else if (entropy < 75) {
-        bar.style.width = "60%";
-        bar.className = "h-full bg-amber-500 transition-all duration-300";
-        label.textContent = "Good";
-        label.className = "text-amber-400";
-        crack.textContent = "Several Months";
-      } else if (entropy < 100) {
-        bar.style.width = "85%";
-        bar.className = "h-full bg-cyan-400 transition-all duration-300";
-        label.textContent = "Strong";
-        label.className = "text-cyan-400";
-        crack.textContent = "10,000+ Years";
-      } else {
-        bar.style.width = "100%";
-        bar.className = "h-full bg-emerald-500 transition-all duration-300";
-        label.textContent = "Unbreakable (Military Grade)";
-        label.className = "text-emerald-400";
-        crack.textContent = "Trillions of Years";
-      }
-    }
-
-    function generateBulkPasswords() {
-      const container = document.getElementById('bulkPasswordList');
-      container.classList.remove('hidden');
-      container.innerHTML = '';
-
-      const length = parseInt(document.getElementById('passLength').value, 10);
-      const useUpper = document.getElementById('chkUpper').checked;
-      const useLower = document.getElementById('chkLower').checked;
-      const useNumbers = document.getElementById('chkNumbers').checked;
-      const useSymbols = document.getElementById('chkSymbols').checked;
-      const excludeAmbiguous = document.getElementById('chkAmbiguous').checked;
-
-      for (let i = 0; i < 5; i++) {
-        const pwd = createCryptoPassword(length, useUpper, useLower, useNumbers, useSymbols, excludeAmbiguous);
-        const row = document.createElement('div');
-        row.className = "flex items-center justify-between gap-2 bg-slate-950/90 border border-slate-800 px-3.5 py-2.5 rounded-xl";
-        row.innerHTML = `
-          <span class="font-mono text-xs sm:text-sm text-slate-200 truncate select-all">${pwd}</span>
-          <button onclick="copyText('${pwd.replace(/'/g, "\\'")}')" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 text-xs font-semibold transition">Copy</button>
-        `;
-        container.appendChild(row);
-      }
-    }
-
-    function copyPrimaryPassword() {
-      const pwd = document.getElementById('generatedPassword').value;
-      copyText(pwd);
-    }
-
-    // Reliable Clipboard Helper (iFrame & Mobile Compatible)
-    function copyText(text) {
-      const tempInput = document.createElement("textarea");
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempInput);
-      showToast("Password copied to clipboard!");
-    }
-
-    // Toast Notification Controller
-    let toastTimeout;
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMsg').textContent = message;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
-    }
-
-    // Mount QR code and initial password on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      qrCode.append(document.getElementById("qrCanvasMount"));
-      generatePassword();
-    });
-  </script>
+  </section>
+
+  <section class="wrap"><div class="banner"><h2>Make every connection smarter.</h2><p>Start creating QR codes and stronger passwords with DeadEnd SecuQR Studio.</p><a class="btn primary" href="#studio">Try the free tools ↗</a></div></section>
+</main>
+<footer><div class="wrap foot"><span>© <span id="year"></span> DeadEnd SecuQR Studio</span><span>CREATE • PROTECT • CONNECT</span></div></footer>
+
+<script>
+  const qrOptions = {width:96,height:96,colorDark:"#101326",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H};
+  function drawQR(id, text, size=96) {
+    const el=document.getElementById(id); el.innerHTML="";
+    new QRCode(el,{...qrOptions,width:size,height:size,text});
+  }
+  drawQR("demo1","https://example.com");
+  drawQR("demo2","WIFI:T:WPA;S:DeadEnd-Demo-WiFi;P:DemoPassword123;H:false;;");
+  drawQR("demo3","upi://pay?pa=demo@upi&pn=Demo%20Store&cu=INR");
+  drawQR("demo4","https://wa.me/910000000000");
+  drawQR("demo5","BEGIN:VCARD\nVERSION:3.0\nN:Demo;Contact;;;\nFN:Demo Contact\nTEL:+910000000000\nEMAIL:demo@example.com\nEND:VCARD");
+
+  let currentQrText="";
+  function makeQr(){
+    const value=document.getElementById("qrText").value.trim();
+    const status=document.getElementById("qrStatus");
+    if(!value){status.textContent="Please enter some text or a URL.";return;}
+    currentQrText=value;
+    drawQR("generatedQr",value,150);
+    status.textContent="QR generated. Scan it or download the PNG.";
+  }
+  document.getElementById("makeQr").addEventListener("click",makeQr);
+  document.getElementById("downloadQr").addEventListener("click",()=>{
+    const box=document.getElementById("generatedQr");
+    const canvas=box.querySelector("canvas");
+    const img=box.querySelector("img");
+    const data=canvas?canvas.toDataURL("image/png"):img?.src;
+    if(!data){document.getElementById("qrStatus").textContent="Generate a QR first.";return;}
+    const a=document.createElement("a");a.href=data;a.download="deadend-secuqr.png";a.click();
+  });
+  makeQr();
+
+  const lengthInput=document.getElementById("passLength");
+  lengthInput.addEventListener("input",()=>document.getElementById("lengthValue").textContent=lengthInput.value);
+  function secureRandom(max){
+    const range= new Uint32Array(1);
+    const limit=Math.floor(0x100000000/max)*max;
+    do{crypto.getRandomValues(range);}while(range[0]>=limit);
+    return range[0]%max;
+  }
+  function generatePassword(){
+    let chars="abcdefghijklmnopqrstuvwxyz";
+    if(document.getElementById("useUpper").checked) chars+="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if(document.getElementById("useNumbers").checked) chars+="0123456789";
+    if(document.getElementById("useSymbols").checked) chars+="!@#$%^&*()-_=+[]{}?";
+    const output=document.getElementById("passwordOutput");
+    if(chars.length===26){document.getElementById("passStatus").textContent="Choose at least one extra character set for more variety.";}
+    let result="";
+    for(let i=0;i<Number(lengthInput.value);i++) result+=chars[secureRandom(chars.length)];
+    output.textContent=result;
+  }
+  document.getElementById("makePassword").addEventListener("click",generatePassword);
+  document.getElementById("copyPassword").addEventListener("click",async()=>{
+    const value=document.getElementById("passwordOutput").textContent;
+    if(!value||value==="Tap Generate Password")return;
+    try{await navigator.clipboard.writeText(value);document.getElementById("passStatus").textContent="Password copied."; }
+    catch(e){document.getElementById("passStatus").textContent="Copy unavailable in this browser. Select and copy the password manually.";}
+  });
+  document.getElementById("year").textContent=new Date().getFullYear();
+  generatePassword();
+</script>
 </body>
 </html>
-
